@@ -22,7 +22,7 @@ for li in movie_section:
     a_href = a['href']
     # print(a_href.find('='))
     _code = a_href[28:]
-    print(_code)
+    # print(_code)
 
     # print(li)
     tit_a = li.select_one('dl.lst_dsc > dt.tit > a').get_text()
@@ -38,9 +38,9 @@ for li in movie_section:
 
 # print(movie_codes)
 # print(len(movie_codes))
-print(movie_data)
+# print(movie_data)
 #=======================================
-# movie_codes = ['11093']#,'11757']
+# movie_codes = ['188909']#,'11757']
 
 import requests
 
@@ -84,9 +84,24 @@ for movie_code in movie_codes:
         # print(li.select_one('div.score_reple > p > span').get_text().replace('/n',"").replace('/t',""))
         score = li.select_one('div.star_score > em').get_text()
         # print(score)
-        rating = li.select_one('div.score_reple > p > span').get_text().replace('\n',"").replace('\t',"").replace('\r',"")
+
+        if li.select_one('div.score_reple > p > span:nth-child(2) > span > a'):
+            rating = li.select_one('div.score_reple > p > span:nth-child(2) > span > a')['data-src'].replace('\n',"").replace('\t',"").replace('\r',"")
+            # print("rating: ", rating)
+        elif li.select_one('div.score_reple > p > span:nth-child(2)'):
+            rating = li.select_one('div.score_reple > p > span:nth-child(2)').text.replace('\n',"").replace('\t',"").replace('\r',"")
+            # print("rating: ", rating)
+        else:
+            rating = li.select_one('div.score_reple > p > span:nth-child(1)').text.replace('\n',"").replace('\t',"").replace('\r',"")
+            # print("rating: ", rating)
         qq.append((score,rating))
-    print(qq)
+    # print(qq)
+    print(len(qq))
+
+# rating:  <span id="_filtered_ment_1">
+#                                 평점높은거 알바라고 보면되요. 개실망했습니다. 저 배우들을 데리고 이정
+# 도밖에 안되나요? 억지스러운 스토리와 웃기고 싶은 욕망, 아마추어같은 영상미, 기억나지않을 음악까지... 
+#         </span>
 
 # #=========================================
 # # 평점 페이지 들어가서 코드부분을 바꿔가면서 
